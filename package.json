@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "concurrently --kill-others \"vite\" \"npx tailwindcss -i ./public/index.css -o ./public/output.css --watch\"",
 		"build": "tsc -b && vite build",
 		"lint": "eslint .",
 		"pret": "npx prettier . --write",
@@ -23,10 +23,14 @@
 			"git add"
 		]
 	},
+	"overrides": {
+		"eslint": "^9.13.0"
+	},
 	"dependencies": {
 		"classnames": "^2.5.1",
 		"react": "^18.3.1",
-		"react-dom": "^18.3.1"
+		"react-dom": "^18.3.1",
+		"react-router-dom": "^6.27.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.13.0",
@@ -34,6 +38,7 @@
 		"@types/react-dom": "^18.3.0",
 		"@vitejs/plugin-react": "^4.3.2",
 		"autoprefixer": "^10.4.20",
+		"concurrently": "^9.0.1",
 		"eslint": "^9.13.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-import": "^2.25.3",
@@ -43,6 +48,8 @@
 		"eslint-plugin-react-hooks": "^4.3.0",
 		"eslint-plugin-tailwindcss": "^3.17.5",
 		"globals": "^15.11.0",
+		"husky": "^9.1.6",
+		"lint-staged": "^15.2.10",
 		"postcss": "^8.4.47",
 		"prettier": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.8",
