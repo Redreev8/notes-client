@@ -10,14 +10,18 @@
 		"pret": "npx prettier . --write",
 		"preview": "vite preview"
 	},
-	"husky": {    
-		"hooks": {      
-			"pre-commit": "YOUR_COMMAND_HERE", 
-			"pre-push": "YOUR_COMMAND_HERE"   
-		}  
+	"husky": {
+		"hooks": {
+			"pre-commit": "YOUR_COMMAND_HERE",
+			"pre-push": "YOUR_COMMAND_HERE"
+		}
 	},
-	"lint-staged": {    
-		"*.(js|jsx)": ["npm run lint:write", "git add"]  
+	"lint-staged": {
+		"*.(ts|tsx)": [
+			"npm run lint -- --fix",
+			"npm run pret",
+			"git add"
+		]
 	},
 	"dependencies": {
 		"classnames": "^2.5.1",
