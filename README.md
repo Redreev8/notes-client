@@ -1,4 +1,4 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Tallwind
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -14,15 +14,21 @@ If you are developing a production application, we recommend updating the config
 - Configure the top-level `parserOptions` property like this:
 
 ```js
-export default tseslint.config({
-	languageOptions: {
-		// other options...
-		parserOptions: {
-			project: ['./tsconfig.node.json', './tsconfig.app.json'],
-			tsconfigRootDir: import.meta.dirname,
-		},
-	},
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import createSvgSpritePlugin from 'vite-plugin-svg-sprite'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+	plugins: [
+		react(),
+		createSvgSpritePlugin({
+			symbolId: '[name]',
+			include: ['**/icons/**.svg', '**/icons/sections/**.svg'],
+		}),
+	],
 })
+
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -31,20 +37,50 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import pluginReact from 'eslint-plugin-react'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import tailwindcss from 'eslint-plugin-tailwindcss'
 
-export default tseslint.config({
-	// Set the react version
-	settings: { react: { version: '18.3' } },
-	plugins: {
-		// Add the react plugin
-		react,
+export default [
+	pluginJs.configs.recommended,
+	...tseslint.configs.recommended,
+	pluginReact.configs.flat.recommended,
+	...tailwindcss.configs['flat/recommended'],
+	{
+		files: ['src/**/*.{ts,tsx}'],
+		rules: {
+			'react/react-in-jsx-scope': 'off',
+			'react/prop-types': 'off',
+			'react/jsx-props-no-spreading': 'off',
+			'no-console': 'error',
+			'@typescript-eslint/no-unused-vars': 'off',
+		},
 	},
-	rules: {
-		// other rules...
-		// Enable its recommended rules
-		...react.configs.recommended.rules,
-		...react.configs['jsx-runtime'].rules,
+	{
+		ignores: [
+			'tailwind.config.js',
+			'vite.config.ts',
+			'eslint.config.js',
+			'vite.config.ts.timestamp-*.mjs',
+			'node_modules',
+		],
 	},
-})
+	{
+		languageOptions: {
+			ecmaVersion: 2022,
+			sourceType: 'module',
+			globals: {
+				...globals.browser,
+			},
+			parserOptions: {
+				project: ['./tsconfig.app.json'],
+			},
+		},
+	},
+	eslintConfigPrettier,
+]
+
 ```
