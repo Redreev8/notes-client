@@ -1,46 +1,45 @@
-import js from '@eslint/js'
 import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import pluginJs from '@eslint/js'
 import tseslint from 'typescript-eslint'
+import pluginReact from 'eslint-plugin-react'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import tailwindcss from 'eslint-plugin-tailwindcss'
 
-export default tseslint.config(
-	{ ignores: ['dist'] },
+export default [
+	pluginJs.configs.recommended,
+	...tseslint.configs.recommended,
+	pluginReact.configs.flat.recommended,
+	...tailwindcss.configs['flat/recommended'],
 	{
-		extends: [
-			'eslint:recommended',
-			'plugin:prettier/recommended',
-			'plugin:tailwindcss/recommended',
-			js.configs.recommended,
-			...tseslint.configs.recommended,
-		],
-		files: ['**/*.{ts,tsx}'],
-		languageOptions: {
-			ecmaVersion: 2020,
-			globals: globals.browser,
-		},
-		plugins: {
-			'react-hooks': reactHooks,
-			'react-refresh': reactRefresh,
-			tailwindcss: 'tailwindcss',
-		},
+		files: ['src/**/*.{ts,tsx}'],
 		rules: {
-			...reactHooks.configs.recommended.rules,
-			'react-refresh/only-export-components': [
-				'warn',
-				{ allowConstantExport: true },
-			],
+			'react/react-in-jsx-scope': 'off',
+			'react/prop-types': 'off',
+			'react/jsx-props-no-spreading': 'off',
+			'no-console': 'error',
+			'@typescript-eslint/no-unused-vars': 'off',
 		},
-		env: {
-			browser: true,
-			es2021: true,
-		},
-		parserOptions: {
-			ecmaVersion: 2021,
+	},
+	{
+		ignores: [
+			'tailwind.config.js',
+			'vite.config.ts',
+			'eslint.config.js',
+			'vite.config.ts.timestamp-*.mjs',
+			'node_modules',
+		],
+	},
+	{
+		languageOptions: {
+			ecmaVersion: 2022,
 			sourceType: 'module',
-			ecmaFeatures: {
-				jsx: true,
+			globals: {
+				...globals.browser,
+			},
+			parserOptions: {
+				project: ['./tsconfig.app.json'],
 			},
 		},
 	},
-)
+	eslintConfigPrettier,
+]
