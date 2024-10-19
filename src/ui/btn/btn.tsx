@@ -19,7 +19,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function ButtonRef(
 	ref,
 ) {
 	return (
-		<button type='button' ref={ref} {...props}>
+		<button type="button" ref={ref} {...props}>
 			<BtnContent iconLeft={iconLeft} iconRight={iconRight}>
 				{children}
 			</BtnContent>

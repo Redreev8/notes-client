@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import Svg from '../svg'
 
 export interface BtnContentProps {
@@ -7,7 +7,7 @@ export interface BtnContentProps {
 	children?: ReactNode
 }
 
-function BtnContent({ children, iconLeft, iconRight }: BtnContentProps) {
+const BtnContent: FC<BtnContentProps> = ({ children, iconLeft, iconRight }) => {
 	return (
 		<span className="flex gap-1">
 			{iconLeft && <Svg className="size-[24px]" name={iconLeft} />}
