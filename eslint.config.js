@@ -8,8 +8,15 @@ import tailwindcss from 'eslint-plugin-tailwindcss'
 export default [
 	pluginJs.configs.recommended,
 	...tseslint.configs.recommended,
-	pluginReact.configs.flat.recommended,
 	...tailwindcss.configs['flat/recommended'],
+	pluginReact.configs.flat.recommended,
+	{
+		"settings": {
+		  "react": {
+			"version": "detect"
+		  }
+		}
+	},
 	{
 		files: ['src/**/*.{ts,tsx}'],
 		rules: {
