@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './index'
 import getFiles from '../api/files/get-files'
+import File from '../api/files/type'
 
 interface FilesState {
-	files: string[]
+	files: File[]
 	loading: 'idle' | 'pending' | 'succeeded' | 'failed'
 }
 const initialState: FilesState = {
@@ -12,21 +13,20 @@ const initialState: FilesState = {
 	loading: 'idle',
 }
 
-export const fetchFiles = createAsyncThunk('files/fetch', async () => {
-	const response = await getFiles()
-	return response.data
-})
+export const fetchFiles = createAsyncThunk(
+	'files/fetch',
+	async (name: string | undefined) => {
+		const response = await getFiles(name)
+		return response.data
+	},
+)
 
 const filesSlice = createSlice({
 	name: 'files',
 	initialState,
 	reducers: {
-		add: (state, { payload }: PayloadAction<string>) => {
+		add: (state, { payload }: PayloadAction<File>) => {
 			state.files.push(payload)
-		},
-		change: (state, action: PayloadAction<{ i: number; name: string }>) => {
-			const { i, name } = action.payload
-			state.files[i] = name
 		},
 		remove: (state, { payload }: PayloadAction<number>) => {
 			state.files.slice(payload, 1)
@@ -39,7 +39,7 @@ const filesSlice = createSlice({
 	},
 })
 
-export const { add, remove, change } = filesSlice.actions
+export const { add, remove } = filesSlice.actions
 
 export const selectFiles = (state: RootState) => state.files
 
