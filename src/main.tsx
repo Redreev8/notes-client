@@ -11,7 +11,11 @@ import './assets/icons/folder.svg'
 
 const router = createBrowserRouter([
 	{
-		path: '/',
+		path: 'notes/',
+		element: <Notes />,
+	},
+	{
+		path: 'notes/*',
 		element: <Notes />,
 	},
 ])
