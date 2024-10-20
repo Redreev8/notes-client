@@ -9,16 +9,13 @@ interface FilesState {
 }
 const initialState: FilesState = {
 	files: [],
-	loading: 'idle'
+	loading: 'idle',
 }
 
-export const fetchFiles = createAsyncThunk(
-	'files/fetch',
-	async () => {
-	  const response = await getFiles()
-	  return response.data
-	},
-)
+export const fetchFiles = createAsyncThunk('files/fetch', async () => {
+	const response = await getFiles()
+	return response.data
+})
 
 const filesSlice = createSlice({
 	name: 'files',
@@ -27,7 +24,7 @@ const filesSlice = createSlice({
 		add: (state, { payload }: PayloadAction<string>) => {
 			state.files.push(payload)
 		},
-		change: (state, action: PayloadAction<{ i: number, name: string }>) => {
+		change: (state, action: PayloadAction<{ i: number; name: string }>) => {
 			const { i, name } = action.payload
 			state.files[i] = name
 		},
@@ -35,7 +32,7 @@ const filesSlice = createSlice({
 			state.files.slice(payload, 1)
 		},
 	},
-	extraReducers: (builder) => {
+	extraReducers: builder => {
 		builder.addCase(fetchFiles.fulfilled, (state, action) => {
 			state.files = action.payload
 		})

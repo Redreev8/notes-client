@@ -1,9 +1,9 @@
 const getFiles = async () => {
-    return {
+	return {
 		data: Array.from({ length: 50 }, (_, i) => {
 			if (i % 5 === 0) return `${i} + text - ${i}`
 			return `название ${i}`
-		})
+		}),
 	}
 }
 
