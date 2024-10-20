@@ -1,16 +1,20 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import Btn from '../ui/btn'
+import { fetchFiles, selectFiles } from '../store/files.slice'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch } from '../store'
 
 const notes: FC = () => {
-	const arr = Array.from({ length: 50 }, (_, i) => {
-		if (i % 5 === 0) return `${i} + text - ${i}`
-		return `text ${i}`
-	})
+	const dispatch = useDispatch<AppDispatch>()
+	const { files } = useSelector(selectFiles)
+	useEffect(() => {
+		dispatch(fetchFiles())
+	}, [])
 	return (
 		<div className="flex w-full flex-wrap gap-1">
-			{arr.map((el, i) => (
+			{files.map((el, i) => (
 				<Btn
-					href="#"
+					href={el}
 					iconLeft={i % 3 === 0 ? 'folder' : 'file'}
 					key={el}
 				>

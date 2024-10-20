@@ -28,7 +28,6 @@ export default defineConfig({
 		}),
 	],
 })
-
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -82,5 +81,4 @@ export default [
 	},
 	eslintConfigPrettier,
 ]
-
 ```

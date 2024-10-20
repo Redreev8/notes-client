@@ -1,6 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import store from '././store'
+import { Provider } from 'react-redux'
 
 import Notes from './pages/notes'
 
@@ -16,6 +18,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<RouterProvider router={router} />
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
 	</StrictMode>,
 )
