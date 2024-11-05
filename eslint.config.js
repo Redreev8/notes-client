@@ -11,11 +11,11 @@ export default [
 	...tailwindcss.configs['flat/recommended'],
 	pluginReact.configs.flat.recommended,
 	{
-		"settings": {
-		  "react": {
-			"version": "detect"
-		  }
-		}
+		settings: {
+			react: {
+				version: 'detect',
+			},
+		},
 	},
 	{
 		files: ['src/**/*.{ts,tsx}'],
