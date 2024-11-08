@@ -4,11 +4,18 @@ import Block from './block'
 import getBlock from './helper/get-block'
 
 const useEditor = ({ children, tools }: EditorProps) => {
-	const [markdownArr, setMarkdownArr] = useState(children.split('\n'))
+	const [markdownArr, setMarkdownArr] = useState<string[]>([])
 	const [isRender, setIsRender] = useState<boolean>(false)
 	useEffect(() => {
 		setIsRender(true)
 	}, [])
+	useEffect(() => {
+		if (!children) {
+			setMarkdownArr([])
+			return
+		}
+		setMarkdownArr(children.split('\n'))
+	}, [children])
 	const getMarkdownToTag = () => {
 		const blocks: ReactNode[] = []
 		for (let i = 0; i < markdownArr.length; i++) {
