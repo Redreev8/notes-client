@@ -9,6 +9,11 @@ export default {
 			animation: {
 				'shadow-drop': 'shadow-drop .6s linear both',
 			},
+			transitionProperty: {
+				rounded: 'border-radius',
+				'rounded-colors':
+					'border-radius, color, background-color',
+			},
 		},
 	},
 	plugins: [],

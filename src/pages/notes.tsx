@@ -1,15 +1,17 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import Btn from '../ui/btn'
 import { fetchFiles, selectFiles } from '../store/files.slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../store'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import transliterateRu from '../helper/transliterate-ru'
 import File from '../api/files/type'
+import { addItems } from '../store/header-items.slice'
+import usePathname from '../hook/usePathname'
 
 const getUrlFiles = (pathname: string, el: File) => {
 	let prevURL = `${pathname}${pathname.length === 1 ? '' : '/'}`
-	const next = `${transliterateRu(el.name).replaceAll(' ', '')}}`
+	const next = `${transliterateRu(el.name).replaceAll(' ', '')}`
 	if (el.type === 'folder') return prevURL + next
 	prevURL = prevURL.replace('/notes/', '')
 	return '/note-file/' + prevURL + next
@@ -17,13 +19,35 @@ const getUrlFiles = (pathname: string, el: File) => {
 
 const notes: FC = () => {
 	const dispatch = useDispatch<AppDispatch>()
-	const params = useParams<{ '*': string | undefined }>()
 	const { files } = useSelector(selectFiles)
 	const { pathname } = useLocation()
-
-	useEffect(() => {
+	usePathname(params => {
 		dispatch(fetchFiles(params['*']))
-	}, [params['*']])
+		dispatch(
+			addItems({
+				right: (
+					<ul className="flex gap-1" key="list-header">
+						<li>
+							<Btn
+								className="uppercase"
+								isSamll
+								iconRight="file-plus"
+							/>
+						</li>
+						<li>
+							<Btn
+								className="uppercase"
+								isSamll
+								iconRight="folder-plus"
+							/>
+						</li>
+					</ul>
+				),
+			}),
+		)
+	})
+
+	if (!Array.isArray(files)) return 'loding'
 	return (
 		<div className="flex w-full flex-wrap gap-1">
 			{files.map(el => (
