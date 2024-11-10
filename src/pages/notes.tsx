@@ -8,6 +8,7 @@ import transliterateRu from '../helper/transliterate-ru'
 import File from '../api/files/type'
 import { addItems } from '../store/header-items.slice'
 import usePathname from '../hook/usePathname'
+import { openOverlay } from '../store/overlay.slice'
 
 const getUrlFiles = (pathname: string, el: File) => {
 	let prevURL = `${pathname}${pathname.length === 1 ? '' : '/'}`
@@ -30,6 +31,13 @@ const notes: FC = () => {
 						<li>
 							<Btn
 								className="uppercase"
+								onClick={() =>
+									dispatch(
+										openOverlay(
+											{},
+										),
+									)
+								}
 								isSamll
 								iconRight="file-plus"
 							/>
