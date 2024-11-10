@@ -3,7 +3,7 @@ import { RootState } from '.'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { ReactNode } from 'react'
 
-interface OverlayState {
+export interface OverlayState {
 	content: ReactNode
 	className?: string | null
 	isOpen: boolean
@@ -11,7 +11,7 @@ interface OverlayState {
 	isClose: boolean
 }
 
-const initialState: OverlayState = {
+export const initialState: OverlayState = {
 	content: null,
 	className: null,
 	isOpen: false,

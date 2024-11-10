@@ -1,8 +1,19 @@
-import { FC, useEffect, useState } from 'react'
+import { createContext, FC, SetStateAction, Dispatch, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeOverlay, hideOverlay, selectOverlay } from '../store/overlay.slice'
+import { closeOverlay, hideOverlay, initialState, OverlayState, selectOverlay } from '../store/overlay.slice'
 import classNames from 'classnames'
 import { AppDispatch } from '../store'
+
+interface OverlayContextProps extends Omit<OverlayState, 'content' | 'className'> {
+    isOpenAnimate: boolean,
+    setIsOpenAnimate: Dispatch<SetStateAction<boolean>>
+}
+
+export const OverlayContext = createContext<OverlayContextProps>({
+    ...initialState,
+    isOpenAnimate: false,
+    setIsOpenAnimate: () => false
+})
 
 const Overlay: FC = () => {
 	const { isOpen, content, className, isClose, isHiden } =
@@ -31,7 +42,9 @@ const Overlay: FC = () => {
 				onClick={() => dispatch(closeOverlay())}
 				className={cl}
 			>
-				{content}
+                <OverlayContext.Provider value={{ isOpen, isOpenAnimate, setIsOpenAnimate, isClose, isHiden }}>
+				    {content}
+                </OverlayContext.Provider>
 			</div>
 		)
 	)
