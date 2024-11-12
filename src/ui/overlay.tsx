@@ -1,18 +1,24 @@
 import { createContext, FC, SetStateAction, Dispatch, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeOverlay, hideOverlay, initialState, OverlayState, selectOverlay } from '../store/overlay.slice'
+import {
+	closeOverlay,
+	hideOverlay,
+	initialState,
+	OverlayState,
+	selectOverlay,
+} from '../store/overlay.slice'
 import classNames from 'classnames'
 import { AppDispatch } from '../store'
 
 interface OverlayContextProps extends Omit<OverlayState, 'content' | 'className'> {
-    isOpenAnimate: boolean,
-    setIsOpenAnimate: Dispatch<SetStateAction<boolean>>
+	isOpenAnimate: boolean
+	setIsOpenAnimate: Dispatch<SetStateAction<boolean>>
 }
 
 export const OverlayContext = createContext<OverlayContextProps>({
-    ...initialState,
-    isOpenAnimate: false,
-    setIsOpenAnimate: () => false
+	...initialState,
+	isOpenAnimate: false,
+	setIsOpenAnimate: () => false,
 })
 
 const Overlay: FC = () => {
@@ -21,10 +27,10 @@ const Overlay: FC = () => {
 	const dispatch = useDispatch<AppDispatch>()
 	const [isOpenAnimate, setIsOpenAnimate] = useState<boolean>(false)
 	const cl = classNames(
-		'fixed left-0 top-0 z-50 size-full transition-opacity duration-1000 overflow-auto bg-slate-950 opacity-0',
+		'fixed left-0 top-0 z-50 flex size-full transition-opacity duration-500 overflow-auto opacity-0',
 		className,
 		{
-			'opacity-60': isOpenAnimate,
+			'opacity-100': isOpenAnimate,
 		},
 	)
 	useEffect(() => {
@@ -37,14 +43,22 @@ const Overlay: FC = () => {
 	}
 	return (
 		!isHiden && (
-			<div
-				onTransitionEnd={handelTransitionEnd}
-				onClick={() => dispatch(closeOverlay())}
-				className={cl}
-			>
-                <OverlayContext.Provider value={{ isOpen, isOpenAnimate, setIsOpenAnimate, isClose, isHiden }}>
-				    {content}
-                </OverlayContext.Provider>
+			<div onTransitionEnd={handelTransitionEnd} className={cl}>
+				<div
+					className="fixed left-0 top-0 -z-10 size-full bg-slate-950 opacity-60"
+					onClick={() => dispatch(closeOverlay())}
+				/>
+				<OverlayContext.Provider
+					value={{
+						isOpen,
+						isOpenAnimate,
+						setIsOpenAnimate,
+						isClose,
+						isHiden,
+					}}
+				>
+					{content}
+				</OverlayContext.Provider>
 			</div>
 		)
 	)
