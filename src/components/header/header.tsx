@@ -8,7 +8,7 @@ const Header: FC = () => {
 		<header className="fixed bottom-0 left-0 z-40 w-full overflow-auto border-t-2 border-slate-700 bg-slate-950">
 			<div className="inline-flex min-w-full gap-1 border-slate-700 p-2 lg:px-6">
 				<div className="flex flex-1 gap-1 justify-self-start">
-					<Btn className="uppercase" isSmall>
+					<Btn className="uppercase" small>
 						меню
 					</Btn>
 					{left && (

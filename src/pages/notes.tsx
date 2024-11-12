@@ -9,6 +9,7 @@ import File from '../api/files/type'
 import { addItems } from '../store/header-items.slice'
 import usePathname from '../hook/usePathname'
 import { openOverlay } from '../store/overlay.slice'
+import ModalCreateFile from '../components/modal-create-file'
 
 const getUrlFiles = (pathname: string, el: File) => {
 	let prevURL = `${pathname}${pathname.length === 1 ? '' : '/'}`
@@ -38,14 +39,14 @@ const notes: FC = () => {
 										),
 									)
 								}
-								isSamll
+								small
 								iconRight="file-plus"
 							/>
 						</li>
 						<li>
 							<Btn
 								className="uppercase"
-								isSamll
+								small
 								iconRight="folder-plus"
 							/>
 						</li>
