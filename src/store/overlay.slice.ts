@@ -39,20 +39,14 @@ const overlayItemsSlice = createSlice({
 				isClose: false,
 			}
 		},
-		closeOverlay: _ => {
-			return {
-				...initialState,
-				isOpen: false,
-				isHiden: false,
-				isClose: true,
-			}
+		closeOverlay: state => {
+			state.isOpen = false
+			state.isClose = true
+			return state
 		},
 		hideOverlay: _ => {
 			return {
 				...initialState,
-				isOpen: false,
-				isHiden: true,
-				isClose: true,
 			}
 		},
 	},
