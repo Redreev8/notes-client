@@ -6,18 +6,19 @@ interface ModalProps extends AreaHTMLAttributes<HTMLDivElement> {
 	className?: string
 }
 
-const Modal = forwardRef<HTMLDivElement, ModalProps>(
-	function ModalRef({ children, className, ...props }, ref) {
-		const cl = classNames(
-			'flex flex-col justify-between bg-slate-900 rounded-2xl m-auto',
-			className,
-		)
-		return (
-			<div className={cl} ref={ref} {...props}>
-				{children}
-			</div>
-		)
-	},
-)
+const Modal = forwardRef<HTMLDivElement, ModalProps>(function ModalRef(
+	{ children, className, ...props },
+	ref,
+) {
+	const cl = classNames(
+		'flex flex-col justify-between bg-slate-900 rounded-2xl m-auto',
+		className,
+	)
+	return (
+		<div className={cl} ref={ref} {...props}>
+			{children}
+		</div>
+	)
+})
 
 export default Modal

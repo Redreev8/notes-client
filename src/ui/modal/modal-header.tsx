@@ -6,15 +6,16 @@ interface ModalHeaderProps extends AreaHTMLAttributes<HTMLDivElement> {
 	className?: string
 }
 
-const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
-	function ModalHeaderRef({ children, className, ...props }, ref) {
-		const cl = classNames('border-slate-700 border-b-2 px-5 py-3', className)
-		return (
-			<div className={cl} ref={ref} {...props}>
-				{children}
-			</div>
-		)
-	},
-)
+const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(function ModalHeaderRef(
+	{ children, className, ...props },
+	ref,
+) {
+	const cl = classNames('border-slate-700 border-b-2 px-5 py-3', className)
+	return (
+		<div className={cl} ref={ref} {...props}>
+			{children}
+		</div>
+	)
+})
 
 export default ModalHeader
