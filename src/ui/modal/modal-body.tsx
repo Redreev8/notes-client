@@ -8,7 +8,7 @@ interface ModalBodyProps extends AreaHTMLAttributes<HTMLDivElement> {
 
 const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>(
 	function ModalBodyRef({ children, className, ...props }, ref) {
-		const cl = classNames('grow px-5 py-3', className)
+		const cl = classNames('grow p-5', className)
 		return (
 			<div className={cl} ref={ref} {...props}>
 				{children}
