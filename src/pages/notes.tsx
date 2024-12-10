@@ -35,7 +35,9 @@ const notes: FC = () => {
 								onClick={() =>
 									dispatch(
 										openOverlay(
-											{},
+											{
+												content: <ModalCreateFile/>,
+											},
 										),
 									)
 								}
