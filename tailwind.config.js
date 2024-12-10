@@ -12,7 +12,7 @@ export default {
 			transitionProperty: {
 				rounded: 'border-radius',
 				'rounded-colors':
-					'border-radius, color, background-color',
+					'border-radius, color, background-color, padding',
 			},
 		},
 	},
