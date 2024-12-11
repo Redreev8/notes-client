@@ -13,6 +13,7 @@ export default {
 				rounded: 'border-radius',
 				'rounded-colors':
 					'border-radius, color, background-color, padding',
+				h: 'height',
 			},
 		},
 	},

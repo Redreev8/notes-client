@@ -8,7 +8,7 @@ import { AxiosError } from 'axios'
 
 interface FilesState {
 	files: File[]
-	loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+	loading: 'idle' | 'pending' | 'failed'
 }
 const initialState: FilesState = {
 	files: [],
@@ -58,6 +58,12 @@ const filesSlice = createSlice({
 			state.loading = 'failed'
 			state.files = []
 		})
+		builder.addCase(fetchFiles.pending, state => {
+			if (state.loading === 'idle') {
+				state.loading = 'pending'
+				state.files = []
+			}
+		})
 		builder.addCase(fetchCreateFile.fulfilled, (state, action) => {
 			state.loading = 'idle'
 			if (action.payload.type === 'file') {
@@ -65,6 +71,11 @@ const filesSlice = createSlice({
 				return
 			}
 			state.files.push(action.payload)
+		})
+		builder.addCase(fetchCreateFile.pending, state => {
+			if (state.loading === 'idle') {
+				state.loading = 'pending'
+			}
 		})
 		builder.addCase(fetchCreateFile.rejected, state => {
 			state.loading = 'failed'
