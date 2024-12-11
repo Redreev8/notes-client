@@ -4,6 +4,7 @@ import type { RootState } from './index'
 import getFiles from '../api/files/get-files'
 import File from '../api/files/type'
 import postFile from '../api/files/post-file'
+import { AxiosError } from 'axios'
 
 interface FilesState {
 	files: File[]
@@ -23,9 +24,17 @@ export const fetchFiles = createAsyncThunk(
 )
 export const fetchCreateFile = createAsyncThunk(
 	'files/create',
-	async ({ name, isFile }: { name: string; isFile: boolean }) => {
-		const response = await postFile(name, isFile)
-		return response.data
+	async (
+		{ name, isFile }: { name: string; isFile: boolean },
+		{ rejectWithValue },
+	) => {
+		try {
+			const response = await postFile(name, isFile)
+			return response!.data
+		} catch (e) {
+			const error = e as AxiosError<{ messange: string }>
+			return rejectWithValue(error.response!.data)
+		}
 	},
 )
 
@@ -42,14 +51,23 @@ const filesSlice = createSlice({
 	},
 	extraReducers: builder => {
 		builder.addCase(fetchFiles.fulfilled, (state, action) => {
+			state.loading = 'idle'
 			state.files = action.payload
 		})
+		builder.addCase(fetchFiles.rejected, state => {
+			state.loading = 'failed'
+			state.files = []
+		})
 		builder.addCase(fetchCreateFile.fulfilled, (state, action) => {
+			state.loading = 'idle'
 			if (action.payload.type === 'file') {
 				state.files = []
 				return
 			}
 			state.files.push(action.payload)
+		})
+		builder.addCase(fetchCreateFile.rejected, state => {
+			state.loading = 'failed'
 		})
 	},
 })

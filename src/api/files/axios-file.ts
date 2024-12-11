@@ -5,3 +5,7 @@ export default axios.create({
 		'auth-token': process.env.USER__TOKEN,
 	},
 })
+
+export interface ErrorAxiosFile {
+	message: string
+}

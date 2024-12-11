@@ -5,6 +5,8 @@ import Label from '../../ui/label'
 import Radio from '../../ui/radio'
 import { AppDispatch, useAppDispatch } from '../../store'
 import { fetchCreateFile } from '../../store/files.slice'
+import { ErrorAxiosFile } from '../../api/files/axios-file'
+import Error from '../../ui/errors/error'
 
 export interface FormCreateFileProps {
 	id: string
@@ -21,6 +23,7 @@ const FormCreateFile: FC<FormCreateFileProps> = ({ id, fileType, onSubmit }) => 
 	const {
 		register,
 		handleSubmit,
+		setError,
 		formState: { errors },
 	} = useForm<FormDataFile>()
 	const dispatch = useAppDispatch<AppDispatch>()
@@ -34,6 +37,11 @@ const FormCreateFile: FC<FormCreateFileProps> = ({ id, fileType, onSubmit }) => 
 		)
 		if (resultAction.type === 'files/create/fulfilled') {
 			if (onSubmit) onSubmit()
+			return
+		}
+		if (resultAction.type === 'files/create/rejected') {
+			const { message } = resultAction.payload as ErrorAxiosFile
+			setError('name', { type: 'double', message })
 			return
 		}
 	}
@@ -53,6 +61,7 @@ const FormCreateFile: FC<FormCreateFileProps> = ({ id, fileType, onSubmit }) => 
 					})}
 					aria-invalid={errors.name ? 'true' : 'false'}
 				/>
+				<Error error={errors.name} />
 			</Label>
 			<fieldset className="flex flex-wrap gap-1">
 				<legend className="mb-1 text-base text-slate-300">
