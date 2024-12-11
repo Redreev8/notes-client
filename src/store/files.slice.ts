@@ -9,10 +9,12 @@ import { AxiosError } from 'axios'
 interface FilesState {
 	files: File[]
 	loading: 'idle' | 'pending' | 'failed'
+	loadingAction: 'idle' | 'pending' | 'succeeded' | 'failed'
 }
 const initialState: FilesState = {
 	files: [],
 	loading: 'idle',
+	loadingAction: 'idle',
 }
 
 export const fetchFiles = createAsyncThunk(
@@ -65,7 +67,7 @@ const filesSlice = createSlice({
 			}
 		})
 		builder.addCase(fetchCreateFile.fulfilled, (state, action) => {
-			state.loading = 'idle'
+			state.loadingAction = 'idle'
 			if (action.payload.type === 'file') {
 				state.files = []
 				return
@@ -73,12 +75,12 @@ const filesSlice = createSlice({
 			state.files.push(action.payload)
 		})
 		builder.addCase(fetchCreateFile.pending, state => {
-			if (state.loading === 'idle') {
-				state.loading = 'pending'
+			if (state.loadingAction === 'idle') {
+				state.loadingAction = 'pending'
 			}
 		})
 		builder.addCase(fetchCreateFile.rejected, state => {
-			state.loading = 'failed'
+			state.loadingAction = 'failed'
 		})
 	},
 })

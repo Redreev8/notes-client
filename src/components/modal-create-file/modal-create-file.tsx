@@ -16,8 +16,8 @@ export interface ModalCreateFileProps {
 const ModalCreateFile: FC<ModalCreateFileProps> = ({ fileType }) => {
 	const id = useId()
 	const dispatch = useAppDispatch<AppDispatch>()
-	const { loading } = useAppSelector(selectFiles)
-	const isLoading = loading === 'pending'
+	const { loadingAction } = useAppSelector(selectFiles)
+	const isLoading = loadingAction === 'pending'
 	const closeModal = () => {
 		dispatch(closeOverlay())
 	}
@@ -53,7 +53,7 @@ const ModalCreateFile: FC<ModalCreateFileProps> = ({ fileType }) => {
 					Отмена
 				</Btn>
 			</ModalFooter>
-			<Loading className={clLoading} />
+			<Loading className={clLoading} isBig />
 		</Modal>
 	)
 }
