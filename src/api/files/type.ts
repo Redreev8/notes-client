@@ -1,6 +1,7 @@
 interface File {
 	type: 'file'
 	name: string
+	ext: string
 }
 
 interface Folder {

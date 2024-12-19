@@ -2,18 +2,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './index'
 import getFiles from '../api/files/get-files'
-import File from '../api/files/type'
 import postFile from '../api/files/post-file'
 import { AxiosError } from 'axios'
+import FileType from '../api/files/type'
 
 interface FilesState {
-	files: File[]
+	files: FileType[]
 	loading: 'idle' | 'pending' | 'failed'
 	loadingAction: 'idle' | 'pending' | 'succeeded' | 'failed'
 }
 const initialState: FilesState = {
 	files: [],
-	loading: 'idle',
+	loading: 'pending',
 	loadingAction: 'idle',
 }
 
@@ -21,6 +21,7 @@ export const fetchFiles = createAsyncThunk(
 	'files/fetch',
 	async (name: string | undefined) => {
 		const response = await getFiles(name)
+		if (!Array.isArray(response.data)) return []
 		return response.data
 	},
 )
@@ -44,7 +45,7 @@ const filesSlice = createSlice({
 	name: 'files',
 	initialState,
 	reducers: {
-		add: (state, { payload }: PayloadAction<File>) => {
+		add: (state, { payload }: PayloadAction<FileType>) => {
 			state.files.push(payload)
 		},
 		remove: (state, { payload }: PayloadAction<number>) => {
