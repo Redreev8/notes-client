@@ -10,7 +10,7 @@ import Btn from '../ui/btn'
 
 const useNotes = () => {
 	const dispatch = useDispatch<AppDispatch>()
-	const { files } = useSelector(selectFiles)
+	const { files, loading } = useSelector(selectFiles)
 	const { pathname } = useLocation()
 	usePathname(params => {
 		dispatch(fetchFiles(`/${params['*'] ?? ''}`))
@@ -61,6 +61,7 @@ const useNotes = () => {
 	})
 
 	return {
+		loading,
 		files,
 		pathname,
 	}
