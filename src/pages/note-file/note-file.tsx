@@ -8,55 +8,43 @@ import { AppDispatch } from '../../store'
 import usePathname from '../../hook/usePathname'
 import { fetchFileContent, selectFileContent } from '../../store/file-content.slice'
 import { useEffect } from 'react'
+import Loading from '../../ui/loading'
+import classNames from 'classnames'
 
-const getUrlFolder = (patch: string[]) => {
-	const p = [...patch]
+const getUrlFolder = (path: string[]) => {
+	const p = [...path]
 	p.pop()
 	return '/notes/' + p.join('/')
 }
 
 const NoteFile = () => {
 	const dispatch = useDispatch<AppDispatch>()
-	const data = useSelector(selectFileContent)
+	const { data, loading } = useSelector(selectFileContent)
 	usePathname(params => {
 		if (!params['*']) return
 		dispatch(fetchFileContent(params['*']?.split('/')))
 	})
+	const isLoading = loading === 'pending'
+	const clLoading = classNames(
+		'fixed bg-slate-950 bottom-0 z-50 left-0 w-full transition-h overflow-hidden',
+		{
+			'h-0': !isLoading,
+			'h-full': isLoading,
+		},
+	)
 	useEffect(() => {
 		if (!data) return
 		if (!data.content) return
-		dispatch(
-			addItems({
-				right: (
-					<ul className="flex gap-1" key="list-header">
-						<li>
-							<Btn
-								className="uppercase"
-								href={getUrlFolder(
-									data.patch,
-								)}
-								isSamll
-							>
-								{
-									data.patch[
-										data.patch
-											.length -
-											1
-									]
-								}
-							</Btn>
-						</li>
-					</ul>
-				),
-			}),
-		)
 	}, [data])
-
+	if (loading === 'failed') {
+		return <h1 className="text-6xl">404</h1>
+	}
 	return (
 		<div>
 			<Editor tools={tools} inlineTools={inlineTools}>
 				{data ? data.content : ' '}
 			</Editor>
+			<Loading className={clLoading} isBig />
 		</div>
 	)
 }

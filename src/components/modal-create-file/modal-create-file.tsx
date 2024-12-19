@@ -22,7 +22,7 @@ const ModalCreateFile: FC<ModalCreateFileProps> = ({ fileType }) => {
 		dispatch(closeOverlay())
 	}
 	const clLoading = classNames(
-		'absolute bg-slate-900 bottom-0 left-0 w-full transition-h overflow-hidden',
+		'absolute bg-slate-900 z-50 bottom-0 left-0 w-full transition-h overflow-hidden',
 		{
 			'h-0': !isLoading,
 			'h-full': isLoading,
